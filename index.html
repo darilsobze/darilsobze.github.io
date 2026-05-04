@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daril Vergesse Sobze Soffack — AI Engineer & CS Student</title>
+  <meta name="description" content="Portfolio of Daril Vergesse Sobze Soffack — AI Engineer Intern at IDAT GmbH, Bachelor Thesis at Fraunhofer SIT, CS Student at TU Darmstadt.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ─── Loading Screen ──────────────────────────────────────────── -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo">SSDV Portfolio</div>
+      <div class="loading-title">Daril Vergesse Sobze Soffack</div>
+      <div class="loading-subtitle">
+        <div class="loading-spinner-inline"></div>
+        AI Engineer &amp; CS Student · TU Darmstadt
+      </div>
+      <div id="loading-items-list"></div>
+      <div class="loading-progress-wrap">
+        <div class="loading-progress-label">Loading</div>
+        <div class="loading-progress-bar">
+          <div id="loading-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── App ─────────────────────────────────────────────────────── -->
+  <div id="app">
+
+    <!-- Navbar -->
+    <nav id="navbar">
+
+      <!-- Left: logo + status -->
+      <div class="nav-left">
+        <div class="nav-logo" onclick="switchToGraph()">SSDV</div>
+        <div class="nav-status-badge">
+          <span class="nw-blink-dot"></span>
+          <span class="nav-status-label">Open to opportunities</span>
+          <div class="nav-status-popup">
+            <div class="nsp-heading">Looking for</div>
+            <div class="nsp-role">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+              AI Engineer
+            </div>
+            <div class="nsp-role">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+              ML Researcher
+            </div>
+            <div class="nsp-role">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              Software Engineer
+            </div>
+            <div class="nsp-role">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              AI Research Assistant
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Now Building pill (always visible) -->
+      <button class="nw-nav-pill" onclick="toggleNowWorking()">
+        <span class="nw-blink-dot"></span>
+        <span class="nw-nav-label">Now Building</span>
+        <svg class="nw-tab-chevron" id="nw-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+
+      <!-- Right: nav links + toggle -->
+      <div class="nav-right">
+        <div class="nav-links">
+          <a class="nav-link" data-section="whoi" href="#whoi">About</a>
+          <a class="nav-link" data-section="experience" href="#experience">Experience</a>
+          <a class="nav-link" data-section="projects" href="#projects">Projects</a>
+          <a class="nav-link" data-section="papers" href="#papers">Papers</a>
+          <a class="nav-link" data-section="contact" href="#contact">Contact</a>
+        </div>
+        <button id="mode-toggle-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          Portfolio Mode
+        </button>
+      </div>
+
+    </nav>
+
+    <!-- ─── Graph View ──────────────────────────────────────────────── -->
+    <div id="graph-view">
+      <div id="graph-container">
+        <canvas id="graph-stars-canvas"></canvas>
+
+        <!-- Graph title label -->
+        <div class="graph-title-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="graph-title-icon">
+            <circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/>
+            <circle cx="5" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>
+            <line x1="7" y1="6" x2="17" y2="6"/><line x1="12" y1="16" x2="5" y2="8"/>
+            <line x1="12" y1="16" x2="19" y2="8"/><line x1="5" y1="8" x2="5" y2="10"/>
+            <line x1="19" y1="8" x2="19" y2="10"/>
+          </svg>
+          <div>
+            <div class="graph-title-text">Skill &amp; Knowledge Graph</div>
+            <div class="graph-title-sub">Hover nodes to explore · click for details</div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="graph-toolbar">
+          <div class="graph-search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input id="graph-search" type="text" placeholder="Search nodes…">
+          </div>
+          <div class="filter-btns">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="skill">Skills</button>
+            <button class="filter-btn" data-filter="project">Projects</button>
+            <button class="filter-btn" data-filter="paper">Papers</button>
+            <button class="filter-btn" data-filter="company">Companies</button>
+          </div>
+          <div class="graph-zoom-controls">
+            <button class="zoom-btn" id="zoom-in" title="Zoom in">+</button>
+            <button class="zoom-btn" id="zoom-out" title="Zoom out">−</button>
+            <button class="zoom-btn" id="zoom-reset" title="Reset zoom">⌂</button>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="graph-legend">
+          <div class="graph-legend-title">Legend</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#ffffff"></div> Person</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div> Skill</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> Project</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Paper</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Company</div>
+        </div>
+
+        <!-- Tooltip -->
+        <div id="graph-tooltip"></div>
+
+        <!-- Detail Panel -->
+        <div id="graph-detail-panel"></div>
+      </div>
+    </div>
+
+    <!-- ─── Portfolio View ──────────────────────────────────────────── -->
+    <div id="portfolio-view">
+      <section id="section-whoi"></section>
+      <section id="section-experience"></section>
+      <section id="section-projects"></section>
+      <section id="section-papers"></section>
+      <section id="section-contact"></section>
+    </div>
+
+    <!-- ─── Modal ──────────────────────────────────────────────────── -->
+    <div id="modal-overlay">
+      <div id="modal-content"></div>
+    </div>
+
+    <!-- ─── Story Overlay ───────────────────────────────────────────── -->
+    <div id="story-overlay" class="story-overlay">
+
+      <!-- Progress bars -->
+      <div class="story-bars" id="story-bars"></div>
+
+      <!-- Top bar -->
+      <div class="story-topbar">
+        <div class="story-profile-row">
+          <img src="Daril-IAS.jpg" alt="Daril" class="story-avatar">
+          <div class="story-meta">
+            <div class="story-meta-name">Daril Vergesse Sobze Soffack</div>
+            <div class="story-meta-sub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn Post · <span id="story-date-label"></span>
+            </div>
+          </div>
+        </div>
+        <button class="story-close-btn" onclick="closeStory()" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Nav zones (click left half = prev, right half = next) -->
+      <div class="story-nav-zone story-nav-prev" onclick="prevStory()"></div>
+      <div class="story-nav-zone story-nav-next" onclick="nextStory()"></div>
+
+      <!-- Post card (custom LinkedIn-styled, no iframe) -->
+      <div class="story-frame-wrap">
+        <div class="li-post-card" id="story-post-card"></div>
+        <a id="story-li-link" href="#" target="_blank" rel="noopener noreferrer" class="story-li-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          View on LinkedIn
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+    </div><!-- /#story-overlay -->
+
+    <!-- ─── Now Building Dropdown (card only — pill lives in navbar) ──── -->
+    <div id="nw-widget" class="nw-widget">
+      <div class="nw-card nw-hidden" id="nw-card">
+        <div class="nw-card-header">
+          <div class="nw-live-badge">
+            <span class="nw-blink-dot"></span>
+            <span class="nw-live-text">LIVE</span>
+          </div>
+          <span class="nw-card-title">Currently Building</span>
+          <button class="nw-close-btn" onclick="toggleNowWorking()" title="Minimize">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="18 15 12 9 6 15"/>
+            </svg>
+          </button>
+        </div>
+        <div class="nw-items">
+          <div class="nw-item">
+            <div class="nw-item-meta">
+              <span class="nw-item-badge nw-badge-thesis">Bachelor Thesis</span>
+              <span class="nw-item-org">@ Fraunhofer SIT</span>
+            </div>
+            <div class="nw-item-title">Multi-class Source Tracing of Audio Deepfakes</div>
+            <div class="nw-item-sub">Combining SSL Features &amp; Spectral Features for detection &amp; attribution</div>
+          </div>
+          <div class="nw-sep"></div>
+          <div class="nw-item">
+            <div class="nw-item-meta">
+              <span class="nw-item-badge nw-badge-app">App · Building</span>
+              <span class="nw-item-name">LOCALPULSE</span>
+            </div>
+            <div class="nw-item-title">Privacy-first Generative City Wallet</div>
+            <div class="nw-item-sub">Hyper-personalized offers on the fly — based on your vibe, pace, activities &amp; real-time signals (weather, time, location)</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /#nw-widget -->
+
+  </div><!-- /#app -->
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
