@@ -121,7 +121,7 @@ class SkillGraph {
       .attr('stroke-opacity', 0.15)
       .attr('stroke-width', 1.5);
 
-    // Solid dot — no label inside
+    // Solid dot
     node.append('circle')
       .attr('class', 'node-circle')
       .attr('r', d => this.getNodeRadius(d))
@@ -129,6 +129,24 @@ class SkillGraph {
       .attr('stroke', d => d.group === 'person' ? 'rgba(255,255,255,0.6)' : 'none')
       .attr('stroke-width', d => d.group === 'person' ? 2 : 0)
       .style('filter', d => this.glows[d.group]);
+
+    // Small semi-transparent label below each node
+    node.append('text')
+      .attr('class', 'node-label')
+      .attr('text-anchor', 'middle')
+      .attr('dy', d => this.getNodeRadius(d) + 9)
+      .attr('font-size', d => d.group === 'skill' ? '7.5px' : d.group === 'person' ? '9px' : '8px')
+      .attr('font-family', 'JetBrains Mono, monospace')
+      .attr('fill', d => this.colors[d.group])
+      .attr('fill-opacity', 0.55)
+      .attr('pointer-events', 'none')
+      .attr('font-weight', '500')
+      .text(d => {
+        const name = d.id;
+        if (d.group === 'skill') return name.length > 16 ? name.slice(0, 14) + '…' : name;
+        if (d.group === 'person') return name.split(' ').slice(0, 2).join(' ');
+        return name.length > 22 ? name.slice(0, 20) + '…' : name;
+      });
 
     node.on('mouseenter', (event, d) => this.onNodeHover(event, d, link))
         .on('mousemove', (event) => this.positionTooltip(event))
@@ -225,8 +243,7 @@ class SkillGraph {
       if (tgtId === d.id) connectedIds.add(srcId);
     });
 
-    this.nodeSelection.selectAll('circle.node-circle')
-      .attr('opacity', nd => connectedIds.has(nd.id) ? 1 : 0.15);
+    this.nodeSelection.attr('opacity', nd => connectedIds.has(nd.id) ? 1 : 0.15);
     link.attr('stroke-opacity', l => {
       const srcId = typeof l.source === 'object' ? l.source.id : l.source;
       const tgtId = typeof l.target === 'object' ? l.target.id : l.target;
@@ -241,7 +258,7 @@ class SkillGraph {
   }
 
   onNodeLeave(event, d, link) {
-    this.nodeSelection.selectAll('circle.node-circle').attr('opacity', 1);
+    this.nodeSelection.attr('opacity', 1);
     link.attr('stroke-opacity', 0.3).attr('stroke-width', 1);
     this.hideTooltip();
   }
@@ -352,8 +369,7 @@ class SkillGraph {
     panel.classList.add('active');
 
     const connectedIds = new Set([d.id, ...connectedNodes]);
-    this.nodeSelection.selectAll('circle.node-circle')
-      .attr('opacity', nd => connectedIds.has(nd.id) ? 1 : 0.2);
+    this.nodeSelection.attr('opacity', nd => connectedIds.has(nd.id) ? 1 : 0.2);
     this.linkSelection.attr('stroke-opacity', l => {
       const srcId = typeof l.source === 'object' ? l.source.id : l.source;
       const tgtId = typeof l.target === 'object' ? l.target.id : l.target;
@@ -367,7 +383,7 @@ class SkillGraph {
     input.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase().trim();
       if (!q) {
-        this.nodeSelection.selectAll('circle.node-circle').attr('opacity', 1);
+        this.nodeSelection.attr('opacity', 1);
         this.linkSelection.attr('stroke-opacity', 0.3);
         return;
       }
@@ -383,7 +399,7 @@ class SkillGraph {
           });
         }
       });
-      this.nodeSelection.selectAll('circle.node-circle').attr('opacity', nd => matches.has(nd.id) ? 1 : 0.08);
+      this.nodeSelection.attr('opacity', nd => matches.has(nd.id) ? 1 : 0.08);
       this.linkSelection.attr('stroke-opacity', l => {
         const srcId = typeof l.source === 'object' ? l.source.id : l.source;
         const tgtId = typeof l.target === 'object' ? l.target.id : l.target;
@@ -401,11 +417,10 @@ class SkillGraph {
         this.activeFilter = filter;
 
         if (filter === 'all') {
-          this.nodeSelection.selectAll('circle.node-circle').attr('opacity', 1);
+          this.nodeSelection.attr('opacity', 1);
           this.linkSelection.attr('stroke-opacity', 0.3);
         } else {
-          this.nodeSelection.selectAll('circle.node-circle')
-            .attr('opacity', nd => nd.group === filter ? 1 : 0.08);
+          this.nodeSelection.attr('opacity', nd => nd.group === filter ? 1 : 0.08);
           this.linkSelection.attr('stroke-opacity', l => {
             const src = typeof l.source === 'object' ? l.source : this.nodes.find(n => n.id === l.source);
             const tgt = typeof l.target === 'object' ? l.target : this.nodes.find(n => n.id === l.target);
@@ -429,7 +444,7 @@ class SkillGraph {
 
     this.svg.on('click', () => {
       this.detailPanel.classList.remove('active');
-      this.nodeSelection.selectAll('circle.node-circle').attr('opacity', 1);
+      this.nodeSelection.attr('opacity', 1);
       this.linkSelection.attr('stroke-opacity', 0.3);
     });
   }
