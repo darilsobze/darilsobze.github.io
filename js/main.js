@@ -810,12 +810,26 @@ function clearStoryTimer() {
   if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
 }
 
+// ─── "Open to opportunities" tap toggle (mobile) ──────────────────
+function setupStatusBadge() {
+  const badge = document.querySelector('.nav-status-badge');
+  if (!badge) return;
+  badge.addEventListener('click', (e) => {
+    badge.classList.toggle('popup-open');
+    e.stopPropagation();
+  });
+  document.addEventListener('click', () => {
+    badge.classList.remove('popup-open');
+  });
+}
+
 // ─── Init ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   runLoadingSequence();
   setupModeToggle();
   setupNavLinks();
   setupNavbarScroll();
+  setupStatusBadge();
 
   document.getElementById('modal-overlay')?.addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal();

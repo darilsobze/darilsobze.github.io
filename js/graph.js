@@ -41,7 +41,7 @@ class SkillGraph {
     this.drawStarField(container);
 
     this.svg = d3.select(`#${this.containerId}`)
-      .append('svg')
+      .insert('svg', '.graph-title-label')
       .attr('width', '100%')
       .attr('height', '100%')
       .style('position', 'absolute')
